@@ -6,11 +6,11 @@ build-backend = "setuptools.build_meta"
 where = ["src"]
 
 [project]
-name = "template"
-version = "0.0.1"
-description = "A template for a Python project."
-authors = [{ name = "template", email = "template@example.com" }]
-requires-python = "~=3.13.0"
+name = "graph2obsidian"
+version = "0.1.0"
+description = "Convert graph databases to Obsidian vaults."
+authors = [{ name = "jamesaorson", email = "jamesaorson@users.noreply.github.com" }]
+requires-python = ">=3.11"
 readme = "README.md"
 classifiers = [
   "Programming Language :: Python :: 3",
@@ -23,11 +23,11 @@ dynamic = ["dependencies"]
 dependencies = { file = ["requirements.txt"] }
 
 [project.urls]
-Homepage = "https://github.com/jamesaorson/template-python"
-Issues = "https://github.com/jamesaorson/template-python/issues"
+Homepage = "https://github.com/jamesaorson/graph2obsidian"
+Issues = "https://github.com/jamesaorson/graph2obsidian/issues"
 
 [project.scripts]
-template = "template.cli:main"
+graph2obsidian = "graph2obsidian.cli:main"
 
 [project.optional-dependencies]
 build = [
@@ -43,10 +43,10 @@ lint = [
 	"Flake8-pyproject==1.2.4",
 	"mypy==2.1.0",
 ]
-test = ["pytest==9.0.2"]
+test = ["pytest>=7.2"]
 
 [tool.pytest.ini_options]
-minversion = "8.0"
+minversion = "7.2"
 addopts = "-ra -q -vv --tb=short"
 testpaths = ["test"]
 
@@ -78,7 +78,7 @@ exclude = [
 
 [tool.isort]
 profile = "black"
-known_first_party = ["src", "test"]
+known_first_party = ["graph2obsidian", "test"]
 
 [tool.mypy]
 check_untyped_defs = true
