@@ -41,7 +41,7 @@ format = [
 lint = [
   "flake8==7.3.0",
 	"Flake8-pyproject==1.2.4",
-	"mypy==1.19.1",
+	"mypy==2.1.0",
 ]
 test = ["pytest==9.0.2"]
 
