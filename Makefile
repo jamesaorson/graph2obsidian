@@ -15,7 +15,7 @@ venv: venv/lib/python$(PYTHON_VERSION)/site-packages ## Create the virtual envir
 .PHONY: run
 run: venv/lib/python$(PYTHON_VERSION)/site-packages ## Run the application
 	. ./venv/bin/activate
-	template
+	graph2obsidian
 
 .PHONY: build
 build: venv/lib/python$(PYTHON_VERSION)/site-packages ## Build the wheel
