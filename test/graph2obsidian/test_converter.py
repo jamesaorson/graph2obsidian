@@ -1,13 +1,7 @@
 """Tests for graph2obsidian converter."""
 
-import json
-import textwrap
-from pathlib import Path
-
-import pytest
-
 from graph2obsidian.converter import _slug, convert
-from graph2obsidian.models import Edge, Graph, Node
+from graph2obsidian.models import Graph, Node
 from graph2obsidian.parser import parse_graph
 
 # ---------------------------------------------------------------------------
