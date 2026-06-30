@@ -98,6 +98,8 @@ def test_demo_relationship_note_content(tmp_path):
     convert(graph, tmp_path)
     content = (tmp_path / "_relationships" / "DONATED_TO - Big Oil PAC to Senator Jane Doe.md").read_text()
     assert "relationship: DONATED_TO" in content
+    assert "source:" in content
+    assert "target:" in content
     assert "[[Big Oil PAC]]" in content
     assert "[[Senator Jane Doe]]" in content
     assert "amount_usd: 250000" in content

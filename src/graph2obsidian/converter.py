@@ -130,8 +130,8 @@ def _render_relationship(edge: Edge, id_to_node: dict[str, Node]) -> str:
     frontmatter: dict[str, Any] = {
         "type": "edge",
         "relationship": edge.relationship,
-        "from": f"[[{_slug(from_name)}]]",
-        "to": f"[[{_slug(to_name)}]]",
+        "source": f"[[{_slug(from_name)}]]",
+        "target": f"[[{_slug(to_name)}]]",
         "tags": ["graph/edge", f"graph/edge/{edge.relationship}"],
     }
     frontmatter.update(edge.properties)
@@ -190,7 +190,7 @@ def _render_relationship_index(rel_type: str, edges: list[Edge], id_to_node: dic
     lines.append(f"> [!info] Requires the [{DATAVIEW_PLUGIN}]({DATAVIEW_URL}) community plugin.")
     lines.append("")
     lines.append("```dataview")
-    lines.append(f"TABLE from, to FROM #graph/edge/{rel_type}")
+    lines.append(f"TABLE source, target FROM #graph/edge/{rel_type}")
     lines.append("SORT file.name ASC")
     lines.append("```")
     lines.append("")
@@ -263,7 +263,7 @@ def _render_vault_overview(graph: Graph) -> str:
         lines.append(f"## {rel_type} edges")
         lines.append("")
         lines.append("```dataview")
-        lines.append(f"TABLE from, to FROM #graph/edge/{rel_type}")
+        lines.append(f"TABLE source, target FROM #graph/edge/{rel_type}")
         lines.append("SORT file.name ASC")
         lines.append("```")
         lines.append("")
