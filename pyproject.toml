@@ -33,6 +33,7 @@ Issues = "https://github.com/jamesaorson/graph2obsidian/issues"
 graph2obsidian = "graph2obsidian.cli:main"
 
 [project.optional-dependencies]
+mcp = ["mcp==1.28.1"]
 build = [
   "build==1.4.0",
 	"twine==6.2.0",
