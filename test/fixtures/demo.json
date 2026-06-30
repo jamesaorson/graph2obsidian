@@ -1,0 +1,78 @@
+{
+  "nodes": [
+    {
+      "id": "senator_doe",
+      "name": "Senator Jane Doe",
+      "type": "Person",
+      "properties": {
+        "title": "U.S. Senator",
+        "state": "CA",
+        "party": "Independent"
+      }
+    },
+    {
+      "id": "big_oil_pac",
+      "name": "Big Oil PAC",
+      "type": "Organization",
+      "properties": {
+        "category": "PAC",
+        "founded": 2005
+      }
+    },
+    {
+      "id": "meridian_energy",
+      "name": "Meridian Energy Corp",
+      "type": "Organization",
+      "properties": {
+        "industry": "Oil & Gas",
+        "revenue_bn": 42.1
+      }
+    },
+    {
+      "id": "clean_future_ngo",
+      "name": "Clean Future NGO",
+      "type": "Organization",
+      "properties": {
+        "category": "NGO",
+        "focus": "climate"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "big_oil_pac",
+      "to": "senator_doe",
+      "relationship": "DONATED_TO",
+      "properties": {
+        "amount_usd": 250000,
+        "year": 2022
+      }
+    },
+    {
+      "from": "meridian_energy",
+      "to": "big_oil_pac",
+      "relationship": "FUNDS",
+      "properties": {
+        "amount_usd": 5000000,
+        "year": 2021
+      }
+    },
+    {
+      "from": "senator_doe",
+      "to": "clean_future_ngo",
+      "relationship": "ENDORSED",
+      "properties": {
+        "year": 2023
+      }
+    },
+    {
+      "from": "meridian_energy",
+      "to": "senator_doe",
+      "relationship": "EMPLOYED_BEFORE",
+      "properties": {
+        "role": "Board Advisor",
+        "until": 2018
+      }
+    }
+  ]
+}
