@@ -10,7 +10,6 @@ from graph2obsidian.converter import _slug, convert
 from graph2obsidian.models import Edge, Graph, Node
 from graph2obsidian.parser import parse_graph
 
-
 # ---------------------------------------------------------------------------
 # _slug
 # ---------------------------------------------------------------------------
