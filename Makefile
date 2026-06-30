@@ -4,7 +4,8 @@ SHELL := /bin/bash
 .ONESHELL:
 .SILENT:
 
-PYTHON_VERSION := 3.11
+PYTHON_VERSION := $(shell python3 --version 2>&1 | cut -d' ' -f2 | cut -d'.' -f1,2)
+MIN_PYTHON_MINOR := 11
 
 PIP_INSTALL_ARGS ?= -e
 
@@ -86,8 +87,8 @@ test: venv/lib/python$(PYTHON_VERSION)/site-packages ## Run the tests
 ##@ Utilities
 
 .PHONY: assert/python-version
-assert/python-version: ## Check the version of python
-	test $$(python3 --version | cut -d' ' -f2 | cut -d'.' -f1,2) = $(PYTHON_VERSION) || (echo "Python $(PYTHON_VERSION) is required." && exit 1)
+assert/python-version: ## Check the version of python (>= 3.11 required)
+	test $$(python3 --version | cut -d' ' -f2 | cut -d'.' -f2) -ge $(MIN_PYTHON_MINOR) || (echo "Python 3.$(MIN_PYTHON_MINOR)+ is required, got $$(python3 --version)" && exit 1)
 
 env-%:
 	: $${$*?Environment variable $* not set}

@@ -14,6 +14,9 @@ requires-python = ">=3.11"
 readme = "README.md"
 classifiers = [
   "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "Operating System :: OS Independent",
 ]
 # Configure setuptools to load dependencies from requirements.txt at build time
