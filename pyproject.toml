@@ -35,7 +35,7 @@ build = [
 	"twine==6.2.0",
 ]
 format = [
-  "black==26.1.0",
+  "black==26.5.1",
 	"isort==7.0.0",
 ]
 lint = [
