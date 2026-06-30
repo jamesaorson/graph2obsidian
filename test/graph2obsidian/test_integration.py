@@ -81,6 +81,39 @@ def test_demo_ngo_has_no_outgoing(tmp_path):
     assert "[[Senator Jane Doe]]" in content
 
 
+def test_demo_relationship_notes_created(tmp_path):
+    graph = load_graph(FIXTURE)
+    convert(graph, tmp_path)
+    rel_dir = tmp_path / "_relationships"
+    assert rel_dir.is_dir()
+    rel_files = {p.name for p in rel_dir.iterdir()}
+    assert "DONATED_TO - Big Oil PAC to Senator Jane Doe.md" in rel_files
+    assert "FUNDS - Meridian Energy Corp to Big Oil PAC.md" in rel_files
+    assert "ENDORSED - Senator Jane Doe to Clean Future NGO.md" in rel_files
+    assert "EMPLOYED_BEFORE - Meridian Energy Corp to Senator Jane Doe.md" in rel_files
+
+
+def test_demo_relationship_note_content(tmp_path):
+    graph = load_graph(FIXTURE)
+    convert(graph, tmp_path)
+    content = (tmp_path / "_relationships" / "DONATED_TO - Big Oil PAC to Senator Jane Doe.md").read_text()
+    assert "relationship: DONATED_TO" in content
+    assert "[[Big Oil PAC]]" in content
+    assert "[[Senator Jane Doe]]" in content
+    assert "amount_usd: 250000" in content
+    assert "graph/edge/DONATED_TO" in content
+
+
+def test_demo_relationship_index_notes_created(tmp_path):
+    graph = load_graph(FIXTURE)
+    convert(graph, tmp_path)
+    rel_idx = tmp_path / "_index" / "relationships"
+    assert (rel_idx / "DONATED_TO.md").exists()
+    assert (rel_idx / "FUNDS.md").exists()
+    assert (rel_idx / "ENDORSED.md").exists()
+    assert (rel_idx / "EMPLOYED_BEFORE.md").exists()
+
+
 def test_demo_index_notes_created(tmp_path):
     graph = load_graph(FIXTURE)
     convert(graph, tmp_path)
@@ -95,3 +128,5 @@ def test_demo_vault_note_created(tmp_path):
     assert "**Nodes:** 4" in vault
     assert "**Edges:** 4" in vault
     assert "Dataview" in vault
+    assert "DONATED_TO" in vault
+    assert "FUNDS" in vault
