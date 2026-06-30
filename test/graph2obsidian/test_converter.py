@@ -159,6 +159,8 @@ def test_convert_relationship_note_frontmatter(tmp_path):
     content = (tmp_path / "_relationships" / "EMPLOYS - Acme Corp to Alice.md").read_text()
     assert "type: edge" in content
     assert "relationship: EMPLOYS" in content
+    assert "source:" in content
+    assert "target:" in content
     assert "[[Acme Corp]]" in content
     assert "[[Alice]]" in content
     assert "graph/edge" in content
