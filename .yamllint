@@ -1,0 +1,14 @@
+extends: default
+
+rules:
+  document-start: disable
+  line-length:
+    max: 160
+    level: error
+  truthy:
+    check-keys: false
+
+ignore: |
+  .venv/
+  venv/
+  .git/

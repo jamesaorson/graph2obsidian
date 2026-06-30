@@ -1,0 +1,17 @@
+*.egg-info
+__pycache__/
+.deps_installed
+.idea/
+.mypy_cache/
+.pytest_cache/
+.venv/
+.coverage
+dist/
+build/
+data/
+venv/
+
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/settings.json

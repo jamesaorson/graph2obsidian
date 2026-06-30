@@ -1,0 +1,92 @@
+[build-system]
+requires = ["setuptools==80.10.2", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project]
+name = "template"
+version = "0.0.1"
+description = "A template for a Python project."
+authors = [{ name = "template", email = "template@example.com" }]
+requires-python = "~=3.13.0"
+readme = "README.md"
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Operating System :: OS Independent",
+]
+# Configure setuptools to load dependencies from requirements.txt at build time
+dynamic = ["dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
+
+[project.urls]
+Homepage = "https://github.com/jamesaorson/template-python"
+Issues = "https://github.com/jamesaorson/template-python/issues"
+
+[project.scripts]
+template = "template.cli:main"
+
+[project.optional-dependencies]
+build = [
+  "build==1.4.0",
+	"twine==6.2.0",
+]
+format = [
+  "black==26.1.0",
+	"isort==7.0.0",
+]
+lint = [
+  "flake8==7.3.0",
+	"Flake8-pyproject==1.2.4",
+	"mypy==1.19.1",
+]
+test = ["pytest==9.0.2"]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = "-ra -q -vv --tb=short"
+testpaths = ["test"]
+
+[tool.black]
+line-length = 120
+extend-exclude = '''
+(
+    .git
+    __pycache__
+    .mypy_cache/
+    .pytest_cache/
+    venv/
+    build/
+    dist/
+)
+'''
+
+[tool.flake8]
+max-line-length = 120
+exclude = [
+  ".git",
+  "__pycache__",
+  ".mypy_cache/",
+  ".pytest_cache/",
+  "venv/",
+  "build/",
+  "dist/",
+]
+
+[tool.isort]
+profile = "black"
+known_first_party = ["src", "test"]
+
+[tool.mypy]
+check_untyped_defs = true
+ignore_missing_imports = true
+explicit_package_bases = true
+exclude = """
+(?x)
+^(
+  .git/ | __pycache__/ | .mypy_cache/ | .pytest_cache/ | venv/ | build/ | dist/
+)$
+"""
