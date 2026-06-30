@@ -68,11 +68,11 @@ def test_parse_graph_defaults():
 
 
 # ---------------------------------------------------------------------------
-# convert
+# convert — node notes
 # ---------------------------------------------------------------------------
 
 
-def test_convert_creates_files(tmp_path):
+def test_convert_creates_node_files(tmp_path):
     graph = parse_graph(SAMPLE_GRAPH)
     written = convert(graph, tmp_path)
     names = {p.name for p in written}
@@ -89,22 +89,27 @@ def test_convert_frontmatter(tmp_path):
     assert "age: 30" in content
 
 
+def test_convert_frontmatter_includes_tag(tmp_path):
+    graph = parse_graph(SAMPLE_GRAPH)
+    convert(graph, tmp_path)
+    content = (tmp_path / "Alice.md").read_text()
+    assert "graph/Person" in content
+
+
 def test_convert_outgoing_link(tmp_path):
     graph = parse_graph(SAMPLE_GRAPH)
     convert(graph, tmp_path)
     acme_content = (tmp_path / "Acme Corp.md").read_text()
-    # Acme has an outgoing EMPLOYS edge to Alice
-    assert "**EMPLOYS**" in acme_content
+    assert "EMPLOYS" in acme_content
     assert "[[Alice]]" in acme_content
-    assert "since=2020" in acme_content
+    assert "since:: 2020" in acme_content
 
 
 def test_convert_incoming_link(tmp_path):
     graph = parse_graph(SAMPLE_GRAPH)
     convert(graph, tmp_path)
     alice_content = (tmp_path / "Alice.md").read_text()
-    # Alice has an incoming EMPLOYS edge from Acme Corp
-    assert "**EMPLOYS**" in alice_content
+    assert "EMPLOYS" in alice_content
     assert "[[Acme Corp]]" in alice_content
 
 
@@ -126,3 +131,59 @@ def test_convert_creates_output_dir(tmp_path):
     out = tmp_path / "nested" / "vault"
     convert(graph, out)
     assert out.is_dir()
+
+
+# ---------------------------------------------------------------------------
+# convert — index notes
+# ---------------------------------------------------------------------------
+
+
+def test_convert_creates_index_notes(tmp_path):
+    graph = parse_graph(SAMPLE_GRAPH)
+    written = convert(graph, tmp_path)
+    names = {p.name for p in written}
+    assert "Person.md" in names
+    assert "Organization.md" in names
+
+
+def test_convert_index_contains_dataview_query(tmp_path):
+    graph = parse_graph(SAMPLE_GRAPH)
+    convert(graph, tmp_path)
+    content = (tmp_path / "_index" / "Person.md").read_text()
+    assert "```dataview" in content
+    assert "graph/Person" in content
+
+
+def test_convert_index_contains_node_links(tmp_path):
+    graph = parse_graph(SAMPLE_GRAPH)
+    convert(graph, tmp_path)
+    content = (tmp_path / "_index" / "Person.md").read_text()
+    assert "[[Alice]]" in content
+
+
+# ---------------------------------------------------------------------------
+# convert — vault overview
+# ---------------------------------------------------------------------------
+
+
+def test_convert_creates_vault_note(tmp_path):
+    graph = parse_graph(SAMPLE_GRAPH)
+    written = convert(graph, tmp_path)
+    names = {p.name for p in written}
+    assert "_VAULT.md" in names
+
+
+def test_convert_vault_stats(tmp_path):
+    graph = parse_graph(SAMPLE_GRAPH)
+    convert(graph, tmp_path)
+    content = (tmp_path / "_VAULT.md").read_text()
+    assert "**Nodes:** 2" in content
+    assert "**Edges:** 1" in content
+
+
+def test_convert_vault_mentions_dataview_plugin(tmp_path):
+    graph = parse_graph(SAMPLE_GRAPH)
+    convert(graph, tmp_path)
+    content = (tmp_path / "_VAULT.md").read_text()
+    assert "Dataview" in content
+    assert "obsidian-dataview" in content
