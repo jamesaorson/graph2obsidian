@@ -105,6 +105,14 @@ def test_convert_outgoing_link(tmp_path):
     assert "since:: 2020" in acme_content
 
 
+def test_convert_outgoing_links_to_relationship_note(tmp_path):
+    graph = parse_graph(SAMPLE_GRAPH)
+    convert(graph, tmp_path)
+    acme_content = (tmp_path / "Acme Corp.md").read_text()
+    assert "_relationships/" in acme_content
+    assert "details" in acme_content
+
+
 def test_convert_incoming_link(tmp_path):
     graph = parse_graph(SAMPLE_GRAPH)
     convert(graph, tmp_path)
@@ -134,11 +142,43 @@ def test_convert_creates_output_dir(tmp_path):
 
 
 # ---------------------------------------------------------------------------
+# convert — relationship notes
+# ---------------------------------------------------------------------------
+
+
+def test_convert_creates_relationship_note(tmp_path):
+    graph = parse_graph(SAMPLE_GRAPH)
+    written = convert(graph, tmp_path)
+    names = {p.name for p in written}
+    assert "EMPLOYS - Acme Corp to Alice.md" in names
+
+
+def test_convert_relationship_note_frontmatter(tmp_path):
+    graph = parse_graph(SAMPLE_GRAPH)
+    convert(graph, tmp_path)
+    content = (tmp_path / "_relationships" / "EMPLOYS - Acme Corp to Alice.md").read_text()
+    assert "type: edge" in content
+    assert "relationship: EMPLOYS" in content
+    assert "[[Acme Corp]]" in content
+    assert "[[Alice]]" in content
+    assert "graph/edge" in content
+    assert "graph/edge/EMPLOYS" in content
+
+
+def test_convert_relationship_note_properties(tmp_path):
+    graph = parse_graph(SAMPLE_GRAPH)
+    convert(graph, tmp_path)
+    content = (tmp_path / "_relationships" / "EMPLOYS - Acme Corp to Alice.md").read_text()
+    assert "since" in content
+    assert "2020" in content
+
+
+# ---------------------------------------------------------------------------
 # convert — index notes
 # ---------------------------------------------------------------------------
 
 
-def test_convert_creates_index_notes(tmp_path):
+def test_convert_creates_node_index_notes(tmp_path):
     graph = parse_graph(SAMPLE_GRAPH)
     written = convert(graph, tmp_path)
     names = {p.name for p in written}
@@ -146,7 +186,21 @@ def test_convert_creates_index_notes(tmp_path):
     assert "Organization.md" in names
 
 
-def test_convert_index_contains_dataview_query(tmp_path):
+def test_convert_creates_relationship_index_notes(tmp_path):
+    graph = parse_graph(SAMPLE_GRAPH)
+    convert(graph, tmp_path)
+    assert (tmp_path / "_index" / "relationships" / "EMPLOYS.md").exists()
+
+
+def test_convert_relationship_index_has_dataview_query(tmp_path):
+    graph = parse_graph(SAMPLE_GRAPH)
+    convert(graph, tmp_path)
+    content = (tmp_path / "_index" / "relationships" / "EMPLOYS.md").read_text()
+    assert "```dataview" in content
+    assert "graph/edge/EMPLOYS" in content
+
+
+def test_convert_node_index_contains_dataview_query(tmp_path):
     graph = parse_graph(SAMPLE_GRAPH)
     convert(graph, tmp_path)
     content = (tmp_path / "_index" / "Person.md").read_text()
@@ -154,7 +208,7 @@ def test_convert_index_contains_dataview_query(tmp_path):
     assert "graph/Person" in content
 
 
-def test_convert_index_contains_node_links(tmp_path):
+def test_convert_node_index_contains_node_links(tmp_path):
     graph = parse_graph(SAMPLE_GRAPH)
     convert(graph, tmp_path)
     content = (tmp_path / "_index" / "Person.md").read_text()
@@ -187,3 +241,10 @@ def test_convert_vault_mentions_dataview_plugin(tmp_path):
     content = (tmp_path / "_VAULT.md").read_text()
     assert "Dataview" in content
     assert "obsidian-dataview" in content
+
+
+def test_convert_vault_lists_relationship_types(tmp_path):
+    graph = parse_graph(SAMPLE_GRAPH)
+    convert(graph, tmp_path)
+    content = (tmp_path / "_VAULT.md").read_text()
+    assert "EMPLOYS" in content
